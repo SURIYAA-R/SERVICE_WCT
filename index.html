@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Dispatch — Pick Your Services</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #FFF8E7;
+      --black: #0F0F0F;
+      --white: #FFFFFF;
+      --yellow: #FFE600;
+      --pink: #FF6584;
+      --mint: #4ECCA3;
+      --sky: #4EA8DE;
+      --purple: #C084FC;
+      --orange: #FF9F1C;
+      --gray-light: #F4EEDD;
+
+      --border-thick: 3.5px solid var(--black);
+      --border-medium: 2.5px solid var(--black);
+      --shadow-hard: 6px 6px 0px var(--black);
+      --shadow-hover: 3px 3px 0px var(--black);
+      --shadow-card: 6px 6px 0px var(--black);
+      --shadow-pressed: 0px 0px 0px var(--black);
+
+      --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--black);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: 120px;
+      background-image:
+        radial-gradient(#00000012 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+    }
+
+    :focus-visible {
+      outline: 3px dashed var(--black);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem;
+    }
+
+    .top-tape-banner {
+      background-color: var(--yellow);
+      border-bottom: var(--border-thick);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .top-tape-banner span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    header {
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .header-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .header-layout {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+
+    .header-content {
+      max-width: 680px;
+    }
+
+    .header-tag {
+      display: inline-block;
+      background-color: var(--sky);
+      color: var(--black);
+      border: var(--border-medium);
+      padding: 0.2rem 0.65rem;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      transform: rotate(-1.5deg);
+      box-shadow: 3px 3px 0 var(--black);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .highlight-marker {
+      display: inline-block;
+      background-color: var(--yellow);
+      border: var(--border-thick);
+      box-shadow: 4px 4px 0 var(--black);
+      padding: 0.05em 0.35em;
+      margin-left: 0.15em;
+      transform: rotate(-1deg);
+      line-height: 1.1;
+      vertical-align: baseline;
+    }
+
+    .subheading {
+      margin-top: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2b2b2b;
+    }
+
+    .top-counter-box {
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-hard);
+      padding: 0.85rem 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      transform: rotate(1deg);
+      align-self: flex-start;
+      transition: transform 0.15s ease;
+    }
+
+    .top-counter-box:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    .top-counter-number {
+      background: var(--pink);
+      color: var(--black);
+      border: var(--border-medium);
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      box-shadow: 2px 2px 0 var(--black);
+    }
+
+    .top-counter-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-counter-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .top-counter-value {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      20% {
+        transform: rotate(-7deg) scale(1.15);
+      }
+
+      40% {
+        transform: rotate(6deg) scale(1.15);
+      }
+
+      60% {
+        transform: rotate(-4deg) scale(1.08);
+      }
+
+      80% {
+        transform: rotate(2deg) scale(1.04);
+      }
+    }
+
+    .wiggle {
+      animation: wiggle 0.45s ease-in-out;
+    }
+
+    .controls-wrapper {
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-hard);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .controls-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 860px) {
+      .controls-grid {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-input {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      font-weight: 600;
+      padding: 0.75rem 2.75rem 0.75rem 2.6rem;
+      background-color: var(--bg-cream);
+      border: var(--border-thick);
+      color: var(--black);
+      box-shadow: 3px 3px 0 var(--black);
+      transition: all 0.15s ease;
+    }
+
+    .search-input:focus {
+      background-color: var(--white);
+      outline: none;
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .search-clear-btn:hover {
+      background: var(--pink);
+      color: var(--black);
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .chip-btn {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.5rem 0.9rem;
+      background-color: var(--bg-cream);
+      color: var(--black);
+      border: var(--border-medium);
+      cursor: pointer;
+      box-shadow: var(--shadow-hover);
+      transition: all 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      user-select: none;
+    }
+
+    .chip-btn:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4.5px 4.5px 0 var(--black);
+      background-color: var(--white);
+    }
+
+    .chip-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--black);
+    }
+
+    .chip-btn.active {
+      background-color: var(--yellow);
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--black);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .service-card {
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 1.35rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .service-card:nth-child(even) {
+      transform: rotate(-0.6deg);
+    }
+
+    .service-card:nth-child(odd) {
+      transform: rotate(0.6deg);
+    }
+
+    .service-card:nth-child(3n) {
+      transform: rotate(-0.3deg);
+    }
+
+    .service-card:hover {
+      transform: translate(2px, 2px) rotate(0deg);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .service-card.is-selected {
+      background-color: #F8FFF8;
+      border-color: var(--black);
+      box-shadow: 6px 6px 0 var(--black);
+    }
+
+    .sticker-badge {
+      position: absolute;
+      top: -12px;
+      right: 14px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border: var(--border-medium);
+      box-shadow: 2px 2px 0 var(--black);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .badge-yellow {
+      background-color: var(--yellow);
+      transform: rotate(3deg);
+    }
+
+    .badge-pink {
+      background-color: var(--pink);
+      color: var(--white);
+      transform: rotate(-3deg);
+    }
+
+    .badge-mint {
+      background-color: var(--mint);
+      transform: rotate(2deg);
+    }
+
+    .badge-purple {
+      background-color: var(--purple);
+      color: var(--black);
+      transform: rotate(-2deg);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .icon-box {
+      width: 52px;
+      height: 52px;
+      border: var(--border-medium);
+      box-shadow: 3px 3px 0 var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.65rem;
+      flex-shrink: 0;
+    }
+
+    .card-meta {
+      flex: 1;
+    }
+
+    .service-category {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #666;
+      letter-spacing: 0.05em;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--black);
+    }
+
+    .service-description {
+      font-size: 0.92rem;
+      color: #2e2e2e;
+      line-height: 1.45;
+      margin-bottom: 1.2rem;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      border-top: 2px dashed #00000030;
+      padding-top: 1rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: auto;
+    }
+
+    .price-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-amount {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--black);
+    }
+
+    .duration-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #555;
+      margin-top: 0.2rem;
+    }
+
+    .select-toggle-btn {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.65rem 1.15rem;
+      background-color: var(--white);
+      color: var(--black);
+      border: var(--border-medium);
+      box-shadow: 3.5px 3.5px 0 var(--black);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .select-toggle-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 var(--black);
+      background-color: var(--yellow);
+    }
+
+    .select-toggle-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--black);
+    }
+
+    .select-toggle-btn[aria-pressed="true"] {
+      background-color: var(--mint);
+      color: var(--black);
+      box-shadow: 2px 2px 0 var(--black);
+      transform: translate(1.5px, 1.5px);
+    }
+
+    .select-toggle-btn[aria-pressed="true"]:hover {
+      background-color: #38b78f;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-hard);
+      padding: 3rem 1.5rem;
+      max-width: 580px;
+      margin: 1.5rem auto;
+      transform: rotate(-0.5deg);
+    }
+
+    .empty-state.visible {
+      display: block;
+    }
+
+    .empty-face {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+      font-size: 0.95rem;
+      color: #444;
+      margin-bottom: 1.25rem;
+    }
+
+    .reset-filter-btn {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.6rem 1.2rem;
+      background: var(--yellow);
+      color: var(--black);
+      border: var(--border-medium);
+      box-shadow: 4px 4px 0 var(--black);
+      cursor: pointer;
+    }
+
+    .reset-filter-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--black);
+    }
+
+    .sticky-summary-bar {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(140%);
+      width: calc(100% - 2.5rem);
+      max-width: 900px;
+      background: var(--yellow);
+      border: var(--border-thick);
+      box-shadow: 8px 8px 0 var(--black);
+      padding: 0.9rem 1.25rem;
+      z-index: 100;
+      transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .sticky-summary-bar.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .summary-counter-pill {
+      background: var(--black);
+      color: var(--white);
+      border: 2px solid var(--black);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.3rem 0.75rem;
+      box-shadow: 2px 2px 0 var(--white);
+    }
+
+    .summary-microcopy {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-note {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .summary-fun-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .summary-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .total-price-wrap {
+      text-align: right;
+    }
+
+    .total-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #333;
+    }
+
+    .total-amount {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .summary-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .clear-selection-btn {
+      background: transparent;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      color: var(--black);
+      padding: 0.4rem;
+    }
+
+    .clear-selection-btn:hover {
+      color: #c90000;
+    }
+
+    .continue-btn {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      background: var(--black);
+      color: var(--white);
+      border: var(--border-medium);
+      padding: 0.7rem 1.4rem;
+      box-shadow: 4px 4px 0 var(--white);
+      cursor: pointer;
+      transition: all 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .continue-btn:hover {
+      background: var(--pink);
+      color: var(--black);
+      box-shadow: 4px 4px 0 var(--black);
+      transform: translate(-1.5px, -1.5px);
+    }
+
+    .continue-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--black);
+    }
+
+    .dispatch-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1.5rem;
+    }
+
+    .dispatch-modal-overlay.open {
+      display: flex;
+    }
+
+    .dispatch-modal {
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: 10px 10px 0 var(--black);
+      max-width: 520px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+      transform: rotate(-1deg);
+      animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.9) rotate(-3deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) rotate(-1deg);
+        opacity: 1;
+      }
+    }
+
+    .modal-badge {
+      background: var(--mint);
+      border: var(--border-medium);
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      display: inline-block;
+      box-shadow: 2px 2px 0 var(--black);
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-list {
+      background: var(--bg-cream);
+      border: var(--border-medium);
+      padding: 1rem;
+      margin: 1rem 0;
+      max-height: 180px;
+      overflow-y: auto;
+      list-style-type: none;
+    }
+
+    .modal-list li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.35rem 0;
+      border-bottom: 1px dashed #ccc;
+    }
+
+    .modal-list li:last-child {
+      border-bottom: none;
+    }
+
+    .modal-close-btn {
+      width: 100%;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0.8rem;
+      background: var(--yellow);
+      border: var(--border-thick);
+      box-shadow: 4px 4px 0 var(--black);
+      cursor: pointer;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--mint);
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      text-align: center;
+      border-top: 3px solid var(--black);
+      padding: 2rem 1rem 1rem;
+    }
+
+    .footer-box {
+      display: inline-block;
+      background: var(--white);
+      border: var(--border-medium);
+      box-shadow: 4px 4px 0 var(--black);
+      padding: 0.85rem 1.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transform: rotate(-0.5deg);
+    }
+
+    .footer-link {
+      color: var(--black);
+      text-decoration: underline;
+      font-weight: 800;
+      margin-left: 0.25rem;
+    }
+
+    .footer-link:hover {
+      background-color: var(--yellow);
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="top-tape-banner" aria-label="Staff Announcement">
+    <span>⚡ INTERNAL STAFF DISPATCH • Q4 ACTIVE CATALOG</span>
+    <span>⚡ FAST CLIENT BUNDLING</span>
+    <span>⚡ LIVE PRICING SYNC</span>
+  </aside>
+
+  <div class="container">
+
+    <header>
+      <div class="header-layout">
+        <div class="header-content">
+          <div class="header-tag">Staff Quick-Select</div>
+          <h1>Pick your <span class="highlight-marker">services</span></h1>
+          <p class="subheading">
+            Assemble client packages in seconds. Click to select, check total pricing, and hit continue to dispatch.
+          </p>
+        </div>
+
+        <div class="top-counter-box" id="top-counter-card" title="Current selection counter">
+          <div class="top-counter-number" id="top-counter-badge">0</div>
+          <div class="top-counter-text">
+            <span class="top-counter-label">Selected Services</span>
+            <span class="top-counter-value" id="top-counter-total">$0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="controls-wrapper" aria-label="Service Filters">
+      <div class="controls-grid">
+
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="search-input" class="search-input" placeholder="Search by keyword, tag, or price..."
+            aria-label="Search services" autocomplete="off">
+          <button type="button" id="search-clear-btn" class="search-clear-btn" title="Clear search"
+            aria-label="Clear search input">✕</button>
+        </div>
+
+        <div class="filter-chips" role="group" aria-label="Filter by category">
+          <button type="button" class="chip-btn active" data-category="all">
+            All <span id="chip-count-all">(8)</span>
+          </button>
+          <button type="button" class="chip-btn" data-category="design">
+            🎨 Design
+          </button>
+          <button type="button" class="chip-btn" data-category="web">
+            💻 Web & Dev
+          </button>
+          <button type="button" class="chip-btn" data-category="content">
+            ✍️ Content
+          </button>
+          <button type="button" class="chip-btn" data-category="quick">
+            ⚡ Quick Fixes
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <main>
+      <div class="services-grid" id="services-grid">
+      </div>
+
+      <div class="empty-state" id="empty-state" role="status" aria-live="polite">
+        <span class="empty-face">( •_•)>⌐■-■</span>
+        <h2 class="empty-title">Nothing matched that filter!</h2>
+        <p class="empty-text">
+          Couldn't find any services matching your search. Try tweaking the words or clearing the category filter.
+        </p>
+        <button type="button" class="reset-filter-btn" id="reset-filter-btn">
+          Clear Filters & Show All
+        </button>
+      </div>
+    </main>
+
+    <div class="sticky-summary-bar" id="sticky-summary-bar" aria-live="polite" role="region"
+      aria-label="Selection Summary">
+      <div class="summary-left">
+        <div class="summary-counter-pill">
+          <span id="summary-count">0</span> items
+        </div>
+        <div class="summary-microcopy">
+          <span class="summary-note">Package Staged</span>
+          <span class="summary-fun-text" id="summary-fun-text">Nice picks! Looking sharp.</span>
+        </div>
+      </div>
+
+      <div class="summary-right">
+        <div class="total-price-wrap">
+          <div class="total-label">Subtotal</div>
+          <div class="total-amount" id="summary-total">$0</div>
+        </div>
+
+        <div class="summary-actions">
+          <button type="button" class="clear-selection-btn" id="clear-all-btn">
+            Clear all
+          </button>
+          <button type="button" class="continue-btn" id="continue-dispatch-btn">
+            Continue ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-box">
+        Need something custom?
+        <a href="#custom" class="footer-link"
+          onclick="alert('Ping #staff-ops on Slack for bespoke client scopes!'); return false;">
+          Ask the team in #ops 💬
+        </a>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="dispatch-modal-overlay" id="dispatch-modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="modal-heading">
+    <div class="dispatch-modal">
+      <div class="modal-badge">Package Ready</div>
+      <h3 class="modal-title" id="modal-heading">Ready for Dispatch! 🚀</h3>
+      <p style="font-size: 0.95rem; color: #333;">Here is the bundle you prepared for the client:</p>
+
+      <ul class="modal-list" id="modal-service-list">
+      </ul>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <span style="font-weight: 800; font-size: 1.1rem;">Total Scope:</span>
+        <span id="modal-total-amount"
+          style="font-family: var(--font-display); font-weight: 800; font-size: 1.6rem;">$0</span>
+      </div>
+
+      <button type="button" class="modal-close-btn" id="modal-close-btn">
+        Got it! Copy & Return to Grid
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const SERVICES_DATA = [
+      {
+        id: "srv-1",
+        name: "Brand Identity Sprint",
+        category: "design",
+        description: "Full logo system, color tokens, and typography guidelines delivered in a tidy handoff deck.",
+        price: 1450,
+        duration: "4 business days",
+        icon: "🎨",
+        iconBg: "#4ECCA3",
+        badge: "Popular",
+        badgeColor: "badge-yellow"
+      },
+      {
+        id: "srv-2",
+        name: "Landing Page Overhaul",
+        category: "web",
+        description: "High-converting hero section, crisp copy flow, and responsive responsive code overhaul.",
+        price: 980,
+        duration: "3 days",
+        icon: "🚀",
+        iconBg: "#FFE600",
+        badge: "Hot",
+        badgeColor: "badge-pink"
+      },
+      {
+        id: "srv-3",
+        name: "SEO & Copy Polish",
+        category: "content",
+        description: "Punchy headlines, metadata refresh, and clarity-first revisions for 5 priority pages.",
+        price: 420,
+        duration: "24-48 hours",
+        icon: "✍️",
+        iconBg: "#FF6584",
+        badge: "Fast Turnaround",
+        badgeColor: "badge-mint"
+      },
+      {
+        id: "srv-4",
+        name: "Speed & Core Web Vitals",
+        category: "quick",
+        description: "Asset optimization, script deferrals, and server cache tune-up to hit green 90+ Lighthouse.",
+        price: 350,
+        duration: "Same day",
+        icon: "⚡",
+        iconBg: "#4EA8DE",
+        badge: "Staff Fav",
+        badgeColor: "badge-yellow"
+      },
+      {
+        id: "srv-5",
+        name: "Social Content Kickstart",
+        category: "design",
+        description: "12 editable Figma/Canva templates for carousel, quote, and promo graphics that pop.",
+        price: 580,
+        duration: "2 days",
+        icon: "📸",
+        iconBg: "#FF9F1C",
+        badge: "New",
+        badgeColor: "badge-purple"
+      },
+      {
+        id: "srv-6",
+        name: "Webflow / CMS Build",
+        category: "web",
+        description: "Pixel-perfect visual CMS setup, client-friendly editor training, and clean schema setup.",
+        price: 2200,
+        duration: "6-8 days",
+        icon: "🛠️",
+        iconBg: "#C084FC",
+        badge: "Full Build",
+        badgeColor: "badge-mint"
+      },
+      {
+        id: "srv-7",
+        name: "Email Newsletter System",
+        category: "content",
+        description: "Clean modular email template tested across Outlook, Apple Mail, and Gmail mobile apps.",
+        price: 320,
+        duration: "1 day",
+        icon: "💌",
+        iconBg: "#4ECCA3",
+        badge: null,
+        badgeColor: ""
+      },
+      {
+        id: "srv-8",
+        name: "Bug Hunt & Quick Patch",
+        category: "quick",
+        description: "Squash annoying UI bugs, broken link redirects, layout glitches, or broken forms.",
+        price: 190,
+        duration: "4 hours",
+        icon: "🪲",
+        iconBg: "#FFE600",
+        badge: "Quick Win",
+        badgeColor: "badge-pink"
+      }
+    ];
+
+    const FUN_MICROCOPY = [
+      "Starting strong! Keep going.",
+      "Nice pick! Great synergy with client goals.",
+      "Solid bundle shaping up here.",
+      "Looking like a powerhouse package!",
+      "Client is going to love this speed.",
+      "Boom! Full-stack service squad assembled."
+    ];
+
+    let selectedIds = new Set();
+    let currentCategory = "all";
+    let searchQuery = "";
+
+    const gridContainer = document.getElementById("services-grid");
+    const emptyState = document.getElementById("empty-state");
+    const searchInput = document.getElementById("search-input");
+    const searchClearBtn = document.getElementById("search-clear-btn");
+    const categoryChips = document.querySelectorAll(".chip-btn");
+    const resetFilterBtn = document.getElementById("reset-filter-btn");
+
+    const topCounterBadge = document.getElementById("top-counter-badge");
+    const topCounterTotal = document.getElementById("top-counter-total");
+    const topCounterCard = document.getElementById("top-counter-card");
+    const stickySummaryBar = document.getElementById("sticky-summary-bar");
+    const summaryCount = document.getElementById("summary-count");
+    const summaryTotal = document.getElementById("summary-total");
+    const summaryFunText = document.getElementById("summary-fun-text");
+    const clearAllBtn = document.getElementById("clear-all-btn");
+    const continueDispatchBtn = document.getElementById("continue-dispatch-btn");
+
+    const modalOverlay = document.getElementById("dispatch-modal-overlay");
+    const modalServiceList = document.getElementById("modal-service-list");
+    const modalTotalAmount = document.getElementById("modal-total-amount");
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+
+    function renderServices() {
+      const filtered = SERVICES_DATA.filter(service => {
+        const matchesCat = currentCategory === "all" || service.category === currentCategory;
+        const normalizedQuery = searchQuery.trim().toLowerCase();
+
+        const matchesSearch =
+          !normalizedQuery ||
+          service.name.toLowerCase().includes(normalizedQuery) ||
+          service.description.toLowerCase().includes(normalizedQuery) ||
+          service.price.toString().includes(normalizedQuery) ||
+          (service.badge && service.badge.toLowerCase().includes(normalizedQuery));
+
+        return matchesCat && matchesSearch;
+      });
+
+      gridContainer.innerHTML = "";
+
+      if (filtered.length === 0) {
+        emptyState.classList.add("visible");
+      } else {
+        emptyState.classList.remove("visible");
+
+        filtered.forEach(service => {
+          const isSelected = selectedIds.has(service.id);
+          const card = document.createElement("article");
+          card.className = `service-card ${isSelected ? 'is-selected' : ''}`;
+          card.setAttribute("id", `card-${service.id}`);
+
+          const badgeMarkup = service.badge ? `
+            <span class="sticker-badge ${service.badgeColor}" aria-label="Tag: ${service.badge}">
+              ★ ${service.badge}
+            </span>
+          ` : "";
+
+          card.innerHTML = `
+            ${badgeMarkup}
+            <div class="card-top">
+              <div class="icon-box" style="background-color: ${service.iconBg};" aria-hidden="true">
+                ${service.icon}
+              </div>
+              <div class="card-meta">
+                <span class="service-category">${service.category}</span>
+                <h3 class="service-title">${service.name}</h3>
+              </div>
+            </div>
+
+            <p class="service-description">${service.description}</p>
+
+            <div class="card-footer">
+              <div class="price-block">
+                <span class="price-amount">$${service.price.toLocaleString()}</span>
+                <span class="duration-tag">⏱ ${service.duration}</span>
+              </div>
+
+              <button
+                type="button"
+                class="select-toggle-btn"
+                data-id="${service.id}"
+                aria-pressed="${isSelected}"
+                aria-label="Toggle selection for ${service.name}"
+              >
+                ${isSelected ? "Selected ✓" : "+ Select"}
+              </button>
+            </div>
+          `;
+
+          gridContainer.appendChild(card);
+        });
+      }
+    }
+
+    function toggleSelection(serviceId) {
+      if (selectedIds.has(serviceId)) {
+        selectedIds.delete(serviceId);
+      } else {
+        selectedIds.add(serviceId);
+      }
+
+      updateTotals();
+      renderServices();
+    }
+
+    function updateTotals() {
+      const count = selectedIds.size;
+      let total = 0;
+
+      SERVICES_DATA.forEach(service => {
+        if (selectedIds.has(service.id)) {
+          total += service.price;
+        }
+      });
+
+      const formattedTotal = `$${total.toLocaleString()}`;
+
+      topCounterBadge.textContent = count;
+      topCounterTotal.textContent = formattedTotal;
+
+      topCounterBadge.classList.remove("wiggle");
+      void topCounterBadge.offsetWidth;
+      topCounterBadge.classList.add("wiggle");
+
+      if (count > 0) {
+        stickySummaryBar.classList.add("active");
+        summaryCount.textContent = count;
+        summaryTotal.textContent = formattedTotal;
+
+        const textIndex = Math.min(count - 1, FUN_MICROCOPY.length - 1);
+        summaryFunText.textContent = FUN_MICROCOPY[textIndex];
+      } else {
+        stickySummaryBar.classList.remove("active");
+      }
+    }
+
+    function clearAllSelections() {
+      selectedIds.clear();
+      updateTotals();
+      renderServices();
+    }
+
+    gridContainer.addEventListener("click", (e) => {
+      const btn = e.target.closest(".select-toggle-btn");
+      if (btn) {
+        const id = btn.getAttribute("data-id");
+        toggleSelection(id);
+      }
+    });
+
+    categoryChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        categoryChips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentCategory = chip.getAttribute("data-category");
+        renderServices();
+      });
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      searchClearBtn.style.display = searchQuery ? "flex" : "none";
+      renderServices();
+    });
+
+    searchClearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      searchClearBtn.style.display = "none";
+      searchInput.focus();
+      renderServices();
+    });
+
+    resetFilterBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      searchClearBtn.style.display = "none";
+      currentCategory = "all";
+      categoryChips.forEach(c => c.classList.toggle("active", c.getAttribute("data-category") === "all"));
+      renderServices();
+    });
+
+    clearAllBtn.addEventListener("click", clearAllSelections);
+
+    continueDispatchBtn.addEventListener("click", () => {
+      if (selectedIds.size === 0) return;
+
+      modalServiceList.innerHTML = "";
+      let grandTotal = 0;
+
+      SERVICES_DATA.forEach(service => {
+        if (selectedIds.has(service.id)) {
+          grandTotal += service.price;
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span>${service.icon} ${service.name}</span>
+            <span>$${service.price.toLocaleString()}</span>
+          `;
+          modalServiceList.appendChild(li);
+        }
+      });
+
+      modalTotalAmount.textContent = `$${grandTotal.toLocaleString()}`;
+      modalOverlay.classList.add("open");
+    });
+
+    modalCloseBtn.addEventListener("click", () => {
+      modalOverlay.classList.remove("open");
+    });
+
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove("open");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modalOverlay.classList.contains("open")) {
+        modalOverlay.classList.remove("open");
+      }
+    });
+
+    renderServices();
+    updateTotals();
+  </script>
+</body>
+
+</html>
